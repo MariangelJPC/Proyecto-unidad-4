@@ -1,5 +1,5 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
-import { auth, actualizarObtenerTareas, eliminarTarea} from "./app/firebase.js";
+import { auth, actualizarObtenerTareas, eliminarTarea, obtenerTarea} from "./app/firebase.js";
 
 import './app/crearCuenta.js'
 import './app/iniciarSesion.js'
@@ -17,12 +17,13 @@ auth.onAuthStateChanged(async function (user) {
         console.log("sesion iniciada")
         try {
           
+          
             //mostrarContenido(); 
             const formTareasMatematicas = $("#form-tareas-matematicas");
             formTareasMatematicas.submit(function (e) {
                 e.preventDefault();
-                var titulo = formTareasMatematicas.find("#titulo-tarea").val();
-                var descripcion = formTareasMatematicas.find("#descripcion-tarea").val();
+                var titulo = formTareasMatematicas.find("#titulo-tarea-matematica").val();
+                var descripcion = formTareasMatematicas.find("#descripcion-tarea-matematica").val();
                 //console.log(title, description);
                 guardarTarea(titulo, descripcion, user.email, "Matematica");
                 
@@ -36,7 +37,7 @@ auth.onAuthStateChanged(async function (user) {
 
 
         const querySnapshot = await obtenerTareas();
-        const contenedorTareas = $("#contenedor-tareas-math");
+        const contenedorTareas = $("#contenedor-tareas-mias-math");
 
         actualizarObtenerTareas(function (querySnapshot) {
             let html = '';
@@ -62,18 +63,47 @@ auth.onAuthStateChanged(async function (user) {
             });
             contenedorTareas.html(html);
 
-           
+            
 
             //ACCION ELIMINAR
 
-/*const $btnsEliminar = $(".btn-eliminar");
+      const $btnsEliminar = $('.btn-eliminar');
 
-$btnsEliminar.each(function(){
-$(this).on('click', function(event) {
-  eliminarTarea($(this).data('id'));
-});
-});*/
+      $btnsEliminar.each(function () {
+        $(this).on('click', function (event) {
+          eliminarTarea($(this).data('id'));
         });
+      });
+
+      //ACCION EDITAR
+
+      const btnsEditar = $(".btn-editar"); // En la constante btnsEditar se guarda 
+      btnsEditar.each(function () { //con cada uno de los botones editar quiero que hagas lo siguiente
+        $(this).on('click', async function (event) {
+          event.preventDefault
+          const doc = await obtenerTarea($(this).data("id"));
+          const tarea = doc.data(); //me va a obtener toda la info de la tarea (titulo, descripcion) y lo va a guardar en la constante "tarea"
+          const taskForm2 = $("#form-tareas-matematicas"); //Dentro de taskForm2 se guardará el forms de las tareas 
+          taskForm2.find('#titulo-tarea-matematica').val(tarea.titulo); //Se coloca el titulo de la tarea en el input del forms
+          taskForm2.find('#descripcion-tarea-matematica').val(tarea.descripcion); ////Se coloca la descrip de la tarea en el input del forms
+          estadoEditar = true; //se esta editando
+          id = doc.id;
+          taskForm2.find('#btn-task-form').text('Modificar');
+        });
+      });
+
+
+
+
+
+
+
+
+
+
+      
+    });
+  
 
 
 

@@ -39,5 +39,8 @@ var swiper = new Swiper(".course-slider", {
     1024: {
       slidesPerView: 3,
     },
+    1440: {
+      slidesPerView: 5,
+    }
   },
 });
