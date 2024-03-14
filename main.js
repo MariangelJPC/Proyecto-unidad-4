@@ -28,8 +28,31 @@ auth.onAuthStateChanged(async function (user) {
                 guardarTarea(titulo, descripcion, user.email, "Matematica");
                 
                 formTareasMatematicas.trigger('reset');
+
+                
             });
 
+            const formTareasFisica = $("#form-tareas-fisica");
+            formTareasFisica.submit(function (e) {
+                e.preventDefault();
+                var titulo = formTareasFisica.find("#titulo-tarea-fisica").val();
+                var descripcion = formTareasFisica.find("#descripcion-tarea-fisica").val();
+                //console.log(title, description);
+                guardarTarea(titulo, descripcion, user.email, "Fisica");
+                
+                formTareasFisica.trigger('reset');
+            });
+
+            const formTareasQuimica = $("#form-tareas-quimica");
+            formTareasQuimica.submit(function (e) {
+                e.preventDefault();
+                var titulo = formTareasQuimica.find("#titulo-tarea-quimica").val();
+                var descripcion = formTareasQuimica.find("#descripcion-tarea-quimica").val();
+                //console.log(title, description);
+                guardarTarea(titulo, descripcion, user.email, "Quimica");
+                
+                formTareasQuimica.trigger('reset');
+            });
 
         } catch (error) {
             console.log(error)
@@ -37,14 +60,31 @@ auth.onAuthStateChanged(async function (user) {
 
 
         const querySnapshot = await obtenerTareas();
-        const contenedorTareas = $("#contenedor-tareas-mias-math");
+        const contenedorTareasMath = $("#contenedor-tareas-mias-math");
+        const contenedorTareasFis = $("#contenedor-tareas-mias-fisica");
+        const contenedorTareasQuim = $('#contenedor-tareas-mias-quimica');
+        const contenedorTareasGeo =$('#contenedor-tareas-mias-geografia');
+        const contenedorTareasHist = $('#contenedor-tareas-mias-historia');
+        const contenedorTareasLit = $('#contenedor-tareas-mias-literatura');
+        const contenedorTareasPsico = $('#contenedor-tareas-mias-psicologia');
+        const contenedorTareasArt = $('#contenedor-tareas-mias-arte');
+
 
         actualizarObtenerTareas(function (querySnapshot) {
-            let html = '';
+            let htmlMath = '';
+            let htmlFis = '';
+            let htmlQuim = '';
+            let htmlGeo = '';
+            let htmlHist = '';
+            let htmlLit = '';
+            let htmlPsico = '';
+            let htmlArt = '';
+
+
             querySnapshot.forEach(function (doc) {
                 const task = doc.data();
                 if (task.materia == "Matematica") {
-                    html += `
+                    htmlMath += `
           <li class="list-group-item list-group-item-action mt-2">
             <h5>${task.titulo}</h5>
             <p>${task.descripcion}</p>
@@ -60,8 +100,141 @@ auth.onAuthStateChanged(async function (user) {
         `;
                     console.log(task);
                 }
+
+                if (task.materia == "Fisica") {
+                  htmlFis += `
+        <li class="list-group-item list-group-item-action mt-2">
+          <h5>${task.titulo}</h5>
+          <p>${task.descripcion}</p>
+          <div>
+            <button class="btn btn-danger btn-eliminar bi bi-trash3" data-id="${doc.id}">
+              Eliminar
+            </button>
+            <button class="btn btn-secondary btn-editar bi bi-pencil" data-id="">
+              Editar
+            </button>
+          </div>
+        </li>
+      `;
+                  console.log(task);
+              }
+
+              if (task.materia == "Quimica") {
+                htmlQuim += `
+      <li class="list-group-item list-group-item-action mt-2">
+        <h5>${task.titulo}</h5>
+        <p>${task.descripcion}</p>
+        <div>
+          <button class="btn btn-danger btn-eliminar bi bi-trash3" data-id="${doc.id}">
+            Eliminar
+          </button>
+          <button class="btn btn-secondary btn-editar bi bi-pencil" data-id="">
+            Editar
+          </button>
+        </div>
+      </li>
+    `;
+                console.log(task);
+            }
+
+            if (task.materia == "Geografia") {
+              htmlGeo += `
+    <li class="list-group-item list-group-item-action mt-2">
+      <h5>${task.titulo}</h5>
+      <p>${task.descripcion}</p>
+      <div>
+        <button class="btn btn-danger btn-eliminar bi bi-trash3" data-id="${doc.id}">
+          Eliminar
+        </button>
+        <button class="btn btn-secondary btn-editar bi bi-pencil" data-id="">
+          Editar
+        </button>
+      </div>
+    </li>
+  `;
+              console.log(task);
+          }
+
+          if (task.materia == "Historia") {
+            htmlHist += `
+  <li class="list-group-item list-group-item-action mt-2">
+    <h5>${task.titulo}</h5>
+    <p>${task.descripcion}</p>
+    <div>
+      <button class="btn btn-danger btn-eliminar bi bi-trash3" data-id="${doc.id}">
+        Eliminar
+      </button>
+      <button class="btn btn-secondary btn-editar bi bi-pencil" data-id="">
+        Editar
+      </button>
+    </div>
+  </li>
+`;
+            console.log(task);
+        }
+
+        if (task.materia == "Literatura") {
+          htmlLit += `
+<li class="list-group-item list-group-item-action mt-2">
+  <h5>${task.titulo}</h5>
+  <p>${task.descripcion}</p>
+  <div>
+    <button class="btn btn-danger btn-eliminar bi bi-trash3" data-id="${doc.id}">
+      Eliminar
+    </button>
+    <button class="btn btn-secondary btn-editar bi bi-pencil" data-id="">
+      Editar
+    </button>
+  </div>
+</li>
+`;
+          console.log(task);
+      }
+
+      if (task.materia == "Psicologia") {
+        htmlPsico += `
+<li class="list-group-item list-group-item-action mt-2">
+<h5>${task.titulo}</h5>
+<p>${task.descripcion}</p>
+<div>
+  <button class="btn btn-danger btn-eliminar bi bi-trash3" data-id="${doc.id}">
+    Eliminar
+  </button>
+  <button class="btn btn-secondary btn-editar bi bi-pencil" data-id="">
+    Editar
+  </button>
+</div>
+</li>
+`;
+        console.log(task);
+    }
+
+    if (task.materia == "Arte") {
+      htmlArt += `
+<li class="list-group-item list-group-item-action mt-2">
+<h5>${task.titulo}</h5>
+<p>${task.descripcion}</p>
+<div>
+<button class="btn btn-danger btn-eliminar bi bi-trash3" data-id="${doc.id}">
+  Eliminar
+</button>
+<button class="btn btn-secondary btn-editar bi bi-pencil" data-id="">
+  Editar
+</button>
+</div>
+</li>
+`;
+      console.log(task);
+  }
             });
-            contenedorTareas.html(html);
+            contenedorTareasMath.html(htmlMath);
+            contenedorTareasFis.html(htmlFis);
+            contenedorTareasQuim.html(htmlQuim);
+            contenedorTareasGeo.html(htmlGeo);
+            contenedorTareasHist.html(htmlHist);
+            contenedorTareasLit.html(htmlLit);
+            contenedorTareasPsico.html(htmlPsico);
+            contenedorTareasArt.html(htmlArt);
 
             
 
